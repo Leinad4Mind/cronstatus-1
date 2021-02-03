@@ -2,7 +2,7 @@
 /**
  *
  * @package       Cron Status
- * @copyright (c) 2014 - 2018 Igor Lavrov and John Peskens
+ * @copyright (c) 2014 - 2021 Igor Lavrov, John Peskens, Leinad4Mind
  * @license       http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
