@@ -2,7 +2,7 @@
 /**
  *
  * @package       Cron Status
- * @copyright (c) 2014 - 2018 Igor Lavrov and John Peskens
+ * @copyright (c) 2014 - 2021 Igor Lavrov, John Peskens, Leinad4Mind
  * @license       http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -140,27 +140,33 @@ class listener implements EventSubscriberInterface
 		$sql = 'SELECT prune_next, prune_freq * 86400 AS prune_time FROM ' . FORUMS_TABLE . ' WHERE enable_prune = 1 ORDER BY prune_next';
 		$result = $this->db->sql_query_limit($sql, 1);
 		$prune = $this->db->sql_fetchrow($result);
-		$rows[] = array(
-			"config_name"  => "prune_forum_last_gc", // This is the time of the last Cron Job, not the time of pruned forums.
-			"config_value" => $prune['prune_next'] - $prune['prune_time'],
-		);
-		$rows[] = array(
-			"config_name"  => "prune_forum_gc",
-			"config_value" => $prune['prune_time'],
-		);
+		if ($prune)
+		{
+			$rows[] = array(
+				"config_name"	=> "prune_forum_last_gc", // This is the time of the last Cron Job, not the time of pruned forums.
+				"config_value"	=> $prune['prune_next'] - $prune['prune_time']
+			);
+			$rows[] = array(
+				"config_name"	=> "prune_forum_gc",
+				"config_value"	=> $prune['prune_time']
+			);
+		}
 		$this->db->sql_freeresult($result);
 
 		$sql = 'SELECT prune_shadow_next, prune_shadow_freq * 86400 AS prune_shadow_time FROM ' . FORUMS_TABLE . ' WHERE enable_shadow_prune = 1 ORDER BY prune_shadow_next';
 		$result = $this->db->sql_query_limit($sql, 1);
 		$prune_shadow = $this->db->sql_fetchrow($result);
-		$rows[] = array(
-			"config_name"  => "prune_shadow_topics_last_gc", // This is the time of the last Cron Job, not the time of pruned shadow topics.
-			"config_value" => $prune_shadow['prune_shadow_next'] - $prune_shadow['prune_shadow_time'],
-		);
-		$rows[] = array(
-			"config_name"  => "prune_shadow_topics_gc",
-			"config_value" => $prune_shadow['prune_shadow_time'],
-		);
+		if ($prune_shadow)
+		{
+			$rows[] = array(
+				"config_name"	=> "prune_shadow_topics_last_gc", // This is the time of the last Cron Job, not the time of pruned shadow topics.
+				"config_value"	=> $prune_shadow['prune_shadow_next'] - $prune_shadow['prune_shadow_time']
+			);
+			$rows[] = array(
+				"config_name"	=> "prune_shadow_topics_gc",
+				"config_value"	=> $prune_shadow['prune_shadow_time']
+			);
+		}
 		$this->db->sql_freeresult($result);
 
 		$rows[] = array(
