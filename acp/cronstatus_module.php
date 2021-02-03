@@ -97,12 +97,13 @@ class cronstatus_module
 				}
 
 				$this->show_tasks($phpbb_container, $sk, $sd, $cron_type);
+				$cron_url = append_sid($phpbb_root_path . 'cron.' . $phpEx, false, false); // This is used in JavaScript (no &amp;).
 
 				$template->assign_vars(array(
 					'U_ACTION'   => $this->u_action,
 					'U_NAME'     => $sk,
 					'U_SORT'     => $sd,
-					'CRON_URL'   => addslashes(append_sid($phpbb_root_path . 'cron.' . $phpEx, false, false)), // This is used in JavaScript (no &amp;)
+					'CRON_URL'   => addslashes($cron_url),
 					'VIEW_TABLE' => $view_table,
 				));
 		}
